@@ -1,38 +1,53 @@
-<img src='http://briangonzalez.github.io/jquery.adaptive-backgrounds.js/favicon.png?2' height='30'> jquery.adaptive-backgrounds.js
-===============================
+<p align='center'>
+  <img src='http://briangonzalez.github.io/jquery.adaptive-backgrounds.js/favicon.png?2'>
+</p>
+
+jquery.adaptive-backgrounds.js
+------------------------------
+
 _A simple jQuery plugin to extract the dominant color of an image and apply it to the background of its parent element._
 
 **[Check it out on the web!](http://briangonzalez.github.io/jquery.adaptive-backgrounds.js/)**
 
 Getting Started
 ------------------
-Simply include jQuery and the __[script](https://raw2.github.com/briangonzalez/jquery.adaptive-backgrounds.js/master/dist/jquery.adaptive-backgrounds.min.js)__ in your page, then run the script like so:
+
+Install via bower:
+
+```
+bower install --save adaptive.background
+```
+
+Then simply include jQuery and the script in your page, and invoke it like so:
 
 ```javascript
 $(document).ready(function(){
-  $.adaptiveBackground.run()
+  $.adaptiveBackground.run();
 });
 ```
 
 The script looks for image(s) with the `data-adaptive-background` attribute:
 
 ```html
-<img src="/image.jpg" data-adaptive-background='1'>
+<img src="/image.jpg" data-adaptive-background>
 ```
 
 ### Using an element with a CSS background image
 
-Instead of using an `<img>` element nested inside of parent element, AB supports grabbing the dominant color of a background image of a standalone element, then applying the corresponding dominant color as the background color of said element. 
+Instead of using an `<img>` element nested inside of parent element, AB supports grabbing the dominant color of a background image of a standalone element, then applying the corresponding dominant color as the background color of said element.
 
 Enable this functionality by adding a data property, `data-ab-css-background` to the element. See the example below:
 
 ```html
-<div style='background-image: url(/some-image.jpg)' data-adaptive-background='1' data-ab-css-background='1'></div>
-``` 
+<div style='background-image: url(/some-image.jpg)' data-adaptive-background data-ab-css-background></div>
+```
 
-Demo 
+Demo
 -----------
-Here's a little demo of how it works. (1) The page loads (2) the dominant background color of the image is extracted (3) said color is applied to parent of image. _Demo drastically slowed down to show effect_. 
+Here's a little demo of how it works. (1) The page loads (2) the dominant background color of the image is extracted (3) said color is applied to parent of image. _Demo drastically slowed down to show effect_.
+
+---
+
 <img src="https://raw.github.com/briangonzalez/jquery.adaptive-background.js/master/misc/ab.gif">
 
 API
@@ -52,11 +67,21 @@ __Example:__
 Call the `run` method, passing in any options you'd like to override.
 
 ```javascript
-var opts = {
-  selector: '.some-selector',
-  parent:   '.some-parent-of-some-selector'
-}
-$.adaptiveBackground.run(opts)
+var defaults      = {
+  selector:             '[data-adaptive-background="1"]',
+  parent:               null,
+  exclude:              [ 'rgb(0,0,0)', 'rgba(255,255,255)' ],
+  normalizeTextColor:   false,
+  normalizedTextColors:  {
+    light:      "#fff",
+    dark:       "#000"
+  },
+  lumaClasses:  {
+    light:      "ab-light",
+    dark:       "ab-dark"
+  }
+};
+$.adaptiveBackground.run(defaults)
 ```
 
 Events Emitted
@@ -64,18 +89,32 @@ Events Emitted
 - __ab-color-found__ [Event](http://api.jquery.com/category/events/event-object/) This event is fired when the dominant color of the image is found. The payload includes the dominant color as well as the color palette contained in the image.
 
 __Example:__
-Subscribe to the `ab-color-found` event like so:
+Bind to the `ab-color-found` event like so:
 
 ```javascript
-$('img.my-image').on('ab-color-found', function(payload){
+$('img.my-image').on('ab-color-found', function(ev,payload){
   console.log(payload.color);   // The dominant color in the image.
   console.log(payload.palette); // The color palette found in the image.
+  console.log(ev);   // The jQuery.Event object
 });
 ```
 
+Success Callback
+----------------
+You may wish to supply a callback function which is called once the magic has been performed.
+
+```javascript
+$.adaptiveBackground.run({
+  success: function($img, data) {
+    console.log('Success!', $img, data);
+  }
+});
+```
+Note, this callback is called _once_ for each image.
+
 Caveats
 --------------
-This plugin utlizes the `<canvas>` element and the `ImageData` object, and due to cross-site security limitations, the script will fail if one tries to extract the colors from an image not hosted on the current domain, *unless* the image allows for [Cross Origin Resource Sharing](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing). 
+This plugin utlizes the `<canvas>` element and the `ImageData` object, and due to cross-site security limitations, the script will fail if one tries to extract the colors from an image not hosted on the current domain, *unless* the image allows for [Cross Origin Resource Sharing](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing).
 
 __Enabling CORS on S3__
 
@@ -87,16 +126,16 @@ To enable CORS for images hosted on S3 buckets, follow the Amazon guide [here](h
  <AllowedMethod>GET</AllowedMethod>
 </CORSRule>
 ```
- 
+
 For all images, you can optionally also include a cross-origin attribute in your image. This is not absolutely necessary since the `anonymous` origin is set in the Javascript code, but kudos to you for being a super-developer.
 
 ```html
-<img src="/image.jpg" data-adaptive-background='1' cross-origin="anonymous"/>
+<img src="/image.jpg" data-adaptive-background cross-origin="anonymous"/>
 ```
 
 Credit
 ------
-This plugin is built on top of a script called [RGBaster](https://github.com/briangonzalez/rgbaster.js). 
+This plugin is built on top of a script called [RGBaster](https://github.com/briangonzalez/rgbaster.js).
 
 Author
 -------

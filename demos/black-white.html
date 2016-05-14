@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Explicit Parent</title>
+  <title>B/W Backgrounds</title>
 
   <script type="text/javascript" src='/lib/jquery.js'></script>
   <script type="text/javascript" src='/src/jquery.adaptive-backgrounds.js'></script>
@@ -9,40 +9,37 @@
 
   $(document).ready(function(){
     $.adaptiveBackground.run({
-      parent: '.my-parent'
-    })
+      exclude: []
+    });
   });
 
   </script>
 
   <style type="text/css">
 
-    body{
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
     .img-wrap{
-      height: 500px;
-      width: 500px;
-      position: absolute;
-      top: 50%; left: 50%;
+      border: 2px solid #ccc;
       text-align: center;
-      -webkit-transform: translateY(-50%) translateX(-50%);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      width: 800px;
+      margin: 10px auto;
     }
 
     .img-wrap img{
       height: 100%;
+      border: 1px dotted #ccc;
     }
 
   </style>
 
 </head>
-<body class='my-parent'>
+<body>
 
   <div class='img-wrap'>
-    <img src="images/4.jpg" data-adaptive-background>
+    <img class="img" src="images/black-bg.jpg" data-adaptive-background>
+  </div>
+
+  <div class='img-wrap'>
+    <img class="img" src="images/white-bg.jpg" data-adaptive-background>
   </div>
 
 </body>

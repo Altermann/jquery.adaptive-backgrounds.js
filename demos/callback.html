@@ -8,7 +8,12 @@
   <script type="text/javascript">
 
   $(document).ready(function(){
-    $.adaptiveBackground.run()
+    $.adaptiveBackground.run({
+      success: function($img, data) {
+        $img.css('transform', "rotate(1100deg) scale(1.2)");
+        console.log('Success!');
+      }
+    });
   });
 
   </script>
@@ -31,6 +36,7 @@
 
     .img-wrap img{
       height: 100%;
+      transition: all 1000ms ease;
     }
   </style>
 

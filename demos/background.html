@@ -8,12 +8,14 @@
   <script type="text/javascript">
 
   $(document).ready(function(){
-    $.adaptiveBackground.run();
+    $.adaptiveBackground.run({
+      exclude: [ 'rgb(0,0,0)' ] // too many black pixels
+    });
   });
 
   </script>
 
-  <style type="text/css"> 
+  <style type="text/css">
 
     body{
       max-width: 500px;
@@ -23,7 +25,7 @@
     .img-wrap{
       border: 2px solid #ccc;
       height: 500px;
-      width: 500px; 
+      width: 500px;
       position: absolute;
       top: 50%; left: 50%;
       text-align: center;
@@ -38,7 +40,7 @@
 </head>
 <body>
 
-  <div class='img-wrap' data-adaptive-background='1' data-ab-css-background='1'>
+  <div class='img-wrap' data-adaptive-background data-ab-css-background>
   </div>
 
 </body>
